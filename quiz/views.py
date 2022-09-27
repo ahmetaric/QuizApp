@@ -1,4 +1,6 @@
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from .models import (
     Category,
@@ -10,6 +12,7 @@ from .models import (
 from .serializers import (
     CategorySerializers,
     QuizSerializers,
+    QuestionSerializers,
 )
 
 class CategoryList(generics.ListAPIView):
@@ -18,6 +21,11 @@ class CategoryList(generics.ListAPIView):
 
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
-    serializer_class = QuizSerializers   
+    serializer_class = QuizSerializers 
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["category"]
+    search_fields = ["title"]  
 
-
+class QuestionList(generics.ListAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializers
