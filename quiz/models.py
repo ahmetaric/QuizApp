@@ -15,10 +15,14 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = 'Categories'
+    
+    @property
+    def quiz_count(self):
+        return self.quizz.count()    
 
 class Quiz(UpdateCreateDate):
     title = models.CharField(max_length=50, verbose_name = 'Quiz Title')
-    category = models.ForeignKey(Category, on_delete = models.CASCADE)
+    category = models.ForeignKey(Category, on_delete = models.CASCADE,related_name="quizz")
     #? delete questions when category changes (models.CASCADE) 👆
     
 
